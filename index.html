@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visual Journal by Albin Baby - Modern 3D Coverflow & Editorial Stories">
+  <title>Albin Baby — Visual Journal</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       DYNAMIC AMBIENT BACKDROP (Model 1 Style)
+       ========================================================================== -->
+  <div class="backdrop-container">
+    <div class="dynamic-backdrop" id="dynamicBackdrop"></div>
+    <div class="backdrop-vignette"></div>
+    <div class="backdrop-noise"></div>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- ==========================================================================
+         TOP FLOATING GLASSMORPHIC NAVIGATION BAR (Model 1)
+         ========================================================================== -->
+    <header class="topbar-container">
+      <div class="glass-nav-pill">
+        
+        <!-- Left View Mode Switcher -->
+        <div class="view-mode-toggle" title="Switch View Mode">
+          <button class="active" id="btnModeCoverflow">
+            <span class="indicator-circle">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                <path d="M4 6h16v2H4zm2 5h12v2H6zm3 5h6v2H9z"/>
+              </svg>
+            </span>
+            <span>3D Flow</span>
+          </button>
+          <button id="btnModeFeed">
+            <span>Stories</span>
+          </button>
+        </div>
+
+        <!-- Center Search Bar (Model 1) -->
+        <div class="search-input-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" placeholder="albinbaby.journal / search memories..." autocomplete="off">
+          <button class="icon-action-btn" id="btnMicVoice" title="Voice Search / Dictate">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Right Quick Action Glass Buttons -->
+        <div class="topbar-actions">
+          <!-- Ambient Audio Soundscape Toggle -->
+          <button class="circle-glass-btn" id="btnAudioToggle" title="Toggle Ambient Mountain Soundscape">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+          </button>
+
+          <!-- Add Journal Entry Button (+) -->
+          <button class="circle-glass-btn" id="btnAddEntry" title="Add New Memory">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+
+          <!-- Share Button (Curved arrow) -->
+          <button class="circle-glass-btn" id="btnShare" title="Share Journal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ==========================================================================
+         LEFT FLOATING DOCK (Model 1)
+         ========================================================================== -->
+    <aside class="left-dock-container">
+      <div class="dock-pill">
+        <!-- Home / Coverflow -->
+        <button class="dock-item-btn active" id="dockHome" aria-label="3D Coverflow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="dock-tooltip">3D Coverflow</span>
+        </button>
+
+        <!-- Stories / Feed -->
+        <button class="dock-item-btn" id="dockExplore" aria-label="Stories Feed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="dock-tooltip">All Stories</span>
+        </button>
+
+        <!-- Saved Bookmarks -->
+        <button class="dock-item-btn" id="dockSaved" aria-label="Saved Bookmarks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span class="dock-tooltip">Saved Frames</span>
+        </button>
+
+        <!-- Profile / About -->
+        <button class="dock-item-btn" id="dockProfile" aria-label="About Albin Baby">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="dock-tooltip">About Albin Baby</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MAIN VIEW: 3D COVERFLOW SECTION (Model 1)
+         ========================================================================== -->
+    <main class="coverflow-section" id="coverflowSection">
+      
+      <!-- Prev Navigation Circular Button -->
+      <button class="carousel-nav-btn prev-btn" id="carouselPrevBtn" aria-label="Previous Frame">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- 3D Carousel Stage -->
+      <div class="coverflow-viewport">
+        <div class="coverflow-track" id="coverflowTrack">
+          <!-- Dynamically populated journal cards -->
+        </div>
+      </div>
+
+      <!-- Next Navigation Circular Button (Model 1) -->
+      <button class="carousel-nav-btn next-btn" id="carouselNextBtn" aria-label="Next Frame">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+    </main>
+
+    <!-- ==========================================================================
+         FEED / GALLERY GRID VIEW
+         ========================================================================== -->
+    <section class="feed-view-container" id="feedView">
+      <div class="feed-header-bar">
+        <div class="feed-title-wrap">
+          <h2>Journal Archives</h2>
+          <p>Photographs, quiet moments, and visual chronicles by Albin Baby</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs-pills">
+          <button class="filter-tab active" data-filter="all">All Frames</button>
+          <button class="filter-tab" data-filter="nature">Nature</button>
+          <button class="filter-tab" data-filter="places">Places</button>
+          <button class="filter-tab" data-filter="portrait">Portraits</button>
+          <button class="filter-tab" data-filter="words">Words & Thoughts</button>
+          <button class="filter-tab" data-filter="moments">Moments</button>
+          <button class="filter-tab" data-filter="saved">🔖 Saved</button>
+        </div>
+      </div>
+
+      <div class="journal-masonry-grid" id="journalGrid">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         BOTTOM FLOATING DOCK (Model 1)
+         ========================================================================== -->
+    <footer class="bottombar-container">
+      
+      <!-- Bottom Left Author Pill -->
+      <div class="author-pill" id="authorPillTrigger" title="Click to view photographer bio">
+        <div class="author-avatar-wrap">
+          <img src="images/866320080_18099670082453028_8059457265895629110_n.jpg" alt="Albin Baby">
+        </div>
+        <div class="author-meta">
+          <span class="author-name">Albin Baby</span>
+          <span class="author-handle">@albin___baby___</span>
+        </div>
+      </div>
+
+      <!-- Bottom Center Location / Subtitle -->
+      <div class="bottom-center-info" id="bottomLocation">
+        <span class="pulse-dot"></span>
+        <span>Munnar, Kerala</span>
+      </div>
+
+      <!-- Bottom Right Chapter / Volume Tag with Red Accent Bar (Model 1) -->
+      <div class="album-chapter-tag" id="bottomChapter">
+        <span>Wayfarer</span>
+        <span class="red-vertical-bar"></span>
+        <span>Story 01</span>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODEL 2: EDITORIAL STORY VIEW MODAL (photo_2026-10-30_18-06-03.jpg)
+       ========================================================================== -->
+  <div class="story-view-overlay" id="storyOverlay">
+    
+    <!-- Top Instagram-style progress strip -->
+    <div class="story-progress-strip" id="storyProgressStrip"></div>
+
+    <!-- Top Right Controls -->
+    <div class="story-top-controls">
+      <button class="story-ctrl-btn" id="closeStoryBtn" title="Close Story (Esc)">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Story Left/Right Click Nav Zones -->
+    <div class="story-click-nav left" id="storyNavLeft" title="Previous Story"></div>
+    <div class="story-click-nav right" id="storyNavRight" title="Next Story"></div>
+
+    <!-- The Exact Model 2 Story Card Canvas -->
+    <div class="model2-story-card" id="storyCardCanvas">
+      <!-- Populated dynamically with Model 2 structure -->
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: ADD NEW JOURNAL ENTRY
+       ========================================================================== -->
+  <div class="modal-overlay" id="addModal">
+    <div class="glass-modal-panel">
+      <button class="modal-close-btn" id="closeAddModal">&times;</button>
+      <h3 style="margin-bottom: 6px; font-size: 22px;">Capture a New Memory</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+        Add a photograph, quote, and location to your visual journal.
+      </p>
+
+      <form id="addEntryForm">
+        <div class="modal-form-group">
+          <label>Memory Title</label>
+          <input type="text" id="newTitle" placeholder="e.g. Need Refreshing, Whispering Pines" required>
+        </div>
+
+        <div class="modal-form-group">
+          <label>Journal Reflection / Quote</label>
+          <textarea id="newQuote" rows="3" placeholder="What feelings or story does this moment capture?" required></textarea>
+        </div>
+
+        <div class="modal-form-group">
+          <label>Location</label>
+          <input type="text" id="newLocation" placeholder="e.g. Vagamon Hills, Kerala">
+        </div>
+
+        <div class="modal-form-group">
+          <label>Category</label>
+          <select id="newCategory">
+            <option value="moments">Moments</option>
+            <option value="nature">Nature</option>
+            <option value="places">Places</option>
+            <option value="portrait">Portrait</option>
+            <option value="words">Words & Thoughts</option>
+          </select>
+        </div>
+
+        <div class="modal-form-group">
+          <label>Select Photograph</label>
+          <input type="file" id="newImage" accept="image/*">
+        </div>
+
+        <button type="submit" class="modal-submit-btn">Publish to Visual Journal</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: SHARE JOURNAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="glass-modal-panel" style="text-align: center;">
+      <button class="modal-close-btn" id="closeShareModal">&times;</button>
+      <h3 style="font-size: 22px; margin-bottom: 8px;">Share This Journal</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+        Spread the visual stories with friends and travel enthusiasts.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 14px; margin-bottom: 24px;">
+        <a href="https://api.whatsapp.com/send?text=Explore%20Albin%20Baby%27s%20Visual%20Journal" target="_blank" class="circle-glass-btn" style="width: 50px; height: 50px;" title="Share on WhatsApp">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/albin___baby___?rpxt=MTN4cXprb3A2dm8ybg==" target="_blank" class="circle-glass-btn" style="width: 50px; height: 50px;" title="Instagram Profile">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+
+      <button class="modal-submit-btn" id="btnCopyLink">Copy Website Link</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: PROFILE / ABOUT ALBIN BABY
+       ========================================================================== -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="glass-modal-panel">
+      <button class="modal-close-btn" id="closeProfileModal">&times;</button>
+      <div class="profile-modal-body">
+        <div class="profile-large-avatar">
+          <img src="images/866320080_18099670082453028_8059457265895629110_n.jpg" alt="Albin Baby">
+        </div>
+        
+        <div>
+          <h3 style="font-size: 24px; font-weight: 800;">Albin Baby</h3>
+          <p style="font-size: 12px; color: var(--accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px;">
+            Visual Storyteller & Photographer
+          </p>
+        </div>
+
+        <div class="profile-stats-row">
+          <div class="stat-item">
+            <span class="stat-number">33</span>
+            <span class="stat-label">Frames</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">12</span>
+            <span class="stat-label">Chapters</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5</span>
+            <span class="stat-label">Genres</span>
+          </div>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.7; color: var(--text-muted); max-width: 420px;">
+          "This journal is a home for scenes from the road, mist upon the mountain ridges, quiet corners, and the unspoken feelings in between."
+        </p>
+        <p style="font-size: 13px; line-height: 1.7; color: rgba(255, 255, 255, 0.85); font-family: var(--font-ml);">
+          "വഴിയോരക്കാഴ്ചകളും മലനിരകളിലെ മഞ്ഞും, ക്യാമറക്കണ്ണിലൂടെ കണ്ട ശാന്തമായ നിമിഷങ്ങളും ഇവിടെ പങ്കുവെക്കുന്നു."
+        </p>
+
+        <a href="https://www.instagram.com/albin___baby___?rpxt=MTN4cXprb3A2dm8ybg==" target="_blank" class="modal-submit-btn" style="text-decoration:none; display:inline-block; text-align:center;">
+          Follow on Instagram @albin___baby___
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-notice" id="toastNotice">Notification</div>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+
+</body>
+</html>
